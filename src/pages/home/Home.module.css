@@ -1,0 +1,121 @@
+/* General styles for both containers */
+.homeContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 100vh;
+}
+
+.authContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 50%;
+  height: 100%;
+  min-height: 100vh;
+  padding: 0 5%;
+  text-align: center;
+  background-color: #ececec;
+}
+
+.authContainer .authBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  max-width: 500px;
+  height: auto;
+  padding: 5%;
+  text-align: left;
+}
+
+/* Specific styles for elements inside .authBox */
+.authContainer .authBox .authTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2a454e;
+}
+
+.authContainer .authBox .authBoxTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2a454e;
+  margin-top: 3rem;
+}
+
+.authContainer .authBox .authBoxSubTitle {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #375a64;
+  margin-top: -0.75rem;
+}
+
+.authContainer .authBox .authInput {
+  width: 100%;
+  max-width: 400px;
+  height: 3rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.authContainer .authBox .authButton {
+  width: 100%;
+  max-width: 400px;
+  height: 3rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #2a454e;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.heroContainerOne img {
+  width: 100%;
+  display: none;
+}
+
+.heroContainer {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroContainer img {
+  width: 100%;
+}
+
+/* Media query for responsive design */
+@media screen and (max-width: 768px) {
+  .homeContainer {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .authContainer {
+    width: 100%;
+    padding: 0;
+  }
+
+  .authContainer .authBox {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .heroContainerOne img {
+    width: 100%;
+    display: block;
+  }
+
+  .heroContainer {
+    width: 100%;
+    display: none;
+  }
+
+  .heroContainer img {
+    width: 100%;
+  }
+}
