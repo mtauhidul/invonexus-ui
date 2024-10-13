@@ -10,11 +10,12 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   width: 50%;
   height: 100%;
   min-height: 100vh;
   padding: 0 5%;
-  text-align: center;
+  text-align: left;
   background-color: #ececec;
 }
 
@@ -22,7 +23,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  max-width: 500px;
+  max-width: 600px;
   height: auto;
   padding: 5%;
   text-align: left;
@@ -33,6 +34,7 @@
   font-size: 2rem;
   font-weight: 600;
   color: #2a454e;
+  text-align: left;
 }
 
 .authContainer .authBox .authBoxTitle {
@@ -47,6 +49,7 @@
   font-weight: 400;
   color: #375a64;
   margin-top: -0.75rem;
+  text-align: left;
 }
 
 .authContainer .authBox .authInput {

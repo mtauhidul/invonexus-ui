@@ -7,6 +7,7 @@ import { ThreeDots } from "react-loader-spinner";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import HeroImg from "../../assets/hero-img.jpg";
+import Logo from "../../assets/invonexus.png";
 import { login } from "../../reducers/userReducer";
 import { userLogin } from "../../services/services";
 import Styles from "./Home.module.css";
@@ -55,16 +56,42 @@ const Home = () => {
           noValidate
           autoComplete="off"
         >
-          <div>
-            <h1 className={Styles.authTitle}>InvoNexus</h1>
-            <p className={Styles.authBoxSubTitle}>
-              Manage your business invoices with ease and efficiency.
-            </p>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <img
+              src={Logo}
+              alt="invonexus"
+              style={{
+                width: "120px",
+                height: "120px",
+                display: "block",
+                marginBottom: "10px",
+              }}
+            />
+            <div>
+              <h1 className={Styles.authTitle}>InvoNexus</h1>
+              <p className={Styles.authBoxSubTitle}>
+                Manage your business invoices with ease and efficiency.
+              </p>
+            </div>
           </div>
           <div className={Styles.heroContainerOne}>
             <img src={HeroImg} alt="Electronic Document Management" />
           </div>
-          <div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <h2 className={Styles.authBoxTitle}>Login</h2>
 
             <TextField

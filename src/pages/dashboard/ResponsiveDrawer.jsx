@@ -21,7 +21,7 @@ import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import Logo from "../../assets/logo.png";
+import Logo from "../../assets/invonexus.png";
 import AddNewDocument from "./sections/addNewDocument/AddNewDocument";
 import CategoryOptions from "./sections/category options/CategoryOptions";
 import ReviewQueue from "./sections/reviewQueue/ReviewQueue";
@@ -76,7 +76,7 @@ function ResponsiveDrawer(props) {
     <div>
       <Toolbar
         sx={{
-          backgroundColor: "#2a454e",
+          backgroundColor: "#fff",
         }}
       >
         <Typography
@@ -84,7 +84,7 @@ function ResponsiveDrawer(props) {
           noWrap
           component="div"
           sx={{
-            color: "#fff",
+            color: "#2a454e",
             fontWeight: "bold",
             fontFamily: "Exo, sans-serif",
             display: "flex",
@@ -92,7 +92,7 @@ function ResponsiveDrawer(props) {
             gap: "0.5rem",
           }}
         >
-          <img src={Logo} alt="logo" style={{ width: "24px" }} />
+          <img src={Logo} alt="logo" style={{ width: "40px" }} />
           InvoNexus
         </Typography>
       </Toolbar>
