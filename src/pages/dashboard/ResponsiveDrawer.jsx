@@ -19,9 +19,10 @@ import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../assets/invonexus.png";
+import Styles from "./ResponsiveDrawer.module.css";
 import AddNewDocument from "./sections/addNewDocument/AddNewDocument";
 import CategoryOptions from "./sections/category options/CategoryOptions";
 import ReviewQueue from "./sections/reviewQueue/ReviewQueue";
@@ -32,9 +33,9 @@ const drawerWidth = 240;
 
 function ResponsiveDrawer(props) {
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const [tab, setTab] = React.useState("Document Queue");
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [tab, setTab] = useState("Document Queue");
 
   const navigate = useNavigate();
 
@@ -58,7 +59,7 @@ function ResponsiveDrawer(props) {
     "Add New Document",
   ];
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedIndex === 0) {
       setTab("Document Queue");
     } else if (selectedIndex === 1) {
@@ -73,64 +74,76 @@ function ResponsiveDrawer(props) {
   }, [selectedIndex]);
 
   const drawer = (
-    <div>
-      <Toolbar
-        sx={{
-          backgroundColor: "#fff",
-        }}
-      >
-        <Typography
-          variant="h6"
-          noWrap
-          component="div"
-          sx={{
-            color: "#2a454e",
-            fontWeight: "bold",
-            fontFamily: "Exo, sans-serif",
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-          }}
-        >
-          <img src={Logo} alt="logo" style={{ width: "40px" }} />
-          InvoNexus
-        </Typography>
+    <div className={Styles.drawerContainer}>
+      <Toolbar className={Styles.drawerHeader}>
+        <div className={Styles.brandContainer}>
+          <img src={Logo} alt="logo" className={Styles.brandLogo} />
+          <Typography
+            className={Styles.brandText}
+            variant="h6"
+            noWrap
+            component="div"
+          >
+            InvoNexus
+          </Typography>
+        </div>
       </Toolbar>
       <Divider />
-      <List>
+      <List className={Styles.menuList}>
         {menus.map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton
+              className={`${Styles.menuItem} ${
+                selectedIndex === index ? Styles.selected : ""
+              }`}
               selected={selectedIndex === index}
-              onClick={(event) => setSelectedIndex(index)}
+              onClick={() => setSelectedIndex(index)}
             >
-              <ListItemIcon>
+              <ListItemIcon className={Styles.menuIcon}>
                 {(index === 0 && <QueueIcon />) ||
                   (index === 1 && <SettingsApplicationsIcon />) ||
                   (index === 2 && <TagIcon />) ||
                   (index === 3 && <CategoryIcon />) ||
                   (index === 4 && <NoteAddIcon />)}
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText
+                primary={text}
+                className={Styles.menuText}
+                primaryTypographyProps={{
+                  fontSize: "0.9rem",
+                  fontWeight: 500,
+                }}
+              />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
-      <Divider />
-      <List>
-        {["Logout"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton
-              onClick={(event) => {
-                handleLogout();
-              }}
-            >
-              <ListItemIcon>{index === 0 && <ExitToAppIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      <div className={Styles.logoutSection}>
+        <List>
+          {["Logout"].map((text, index) => (
+            <ListItem key={text} disablePadding>
+              <ListItemButton
+                className={Styles.logoutItem}
+                onClick={() => {
+                  handleLogout();
+                }}
+              >
+                <ListItemIcon className={Styles.logoutIcon}>
+                  {index === 0 && <ExitToAppIcon />}
+                </ListItemIcon>
+                <ListItemText
+                  primary={text}
+                  className={Styles.logoutText}
+                  primaryTypographyProps={{
+                    fontSize: "0.9rem",
+                    fontWeight: 500,
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </div>
     </div>
   );
 
@@ -142,10 +155,10 @@ function ResponsiveDrawer(props) {
       <CssBaseline />
       <AppBar
         position="fixed"
+        className={Styles.appBarContainer}
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
-          backgroundColor: "#2a454e",
         }}
       >
         <Toolbar>
@@ -158,7 +171,12 @@ function ResponsiveDrawer(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            className={Styles.appBarTitle}
+          >
             {tab}
           </Typography>
         </Toolbar>
@@ -203,18 +221,20 @@ function ResponsiveDrawer(props) {
       </Box>
       <Box
         component="main"
+        className={Styles.mainContent}
         sx={{
           flexGrow: 1,
-          p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
         <Toolbar />
-        {selectedIndex === 0 && <ReviewQueue />}
-        {selectedIndex === 1 && <StatusOptions />}
-        {selectedIndex === 2 && <TagOptions />}
-        {selectedIndex === 3 && <CategoryOptions />}
-        {selectedIndex === 4 && <AddNewDocument />}
+        <div className={Styles.contentCard}>
+          {selectedIndex === 0 && <ReviewQueue />}
+          {selectedIndex === 1 && <StatusOptions />}
+          {selectedIndex === 2 && <TagOptions />}
+          {selectedIndex === 3 && <CategoryOptions />}
+          {selectedIndex === 4 && <AddNewDocument />}
+        </div>
       </Box>
     </Box>
   );

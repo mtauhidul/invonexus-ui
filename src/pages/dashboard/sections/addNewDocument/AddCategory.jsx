@@ -1,11 +1,10 @@
-import Box from '@mui/material/Box';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import * as React from 'react';
-import { useSelector } from 'react-redux';
-import { selectCategories } from '../../../../reducers/categoriesReducer';
+import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import { useSelector } from "react-redux";
+import { selectCategories } from "../../../../reducers/categoriesReducer";
 
 export default function AddCategory({ category, setCategory }) {
   const categories = useSelector(selectCategories);
@@ -17,15 +16,16 @@ export default function AddCategory({ category, setCategory }) {
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id='demo-simple-select-label'>Select Category</InputLabel>
+        <InputLabel id="demo-simple-select-label">Select Category</InputLabel>
         <Select
-          labelId='demo-simple-select-label'
-          id='demo-simple-select'
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
           value={category}
-          label='Select Category'
-          onChange={handleChange}>
+          label="Select Category"
+          onChange={handleChange}
+        >
           {categories.map((category) => (
-            <MenuItem key={category.id} value={category.categoryName}>
+            <MenuItem key={category.categoryId} value={category.categoryName}>
               {category.categoryName}
             </MenuItem>
           ))}

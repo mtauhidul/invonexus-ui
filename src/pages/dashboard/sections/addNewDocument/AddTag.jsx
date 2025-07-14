@@ -1,11 +1,10 @@
-import Box from '@mui/material/Box';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import * as React from 'react';
-import { useSelector } from 'react-redux';
-import { selectTags } from '../../../../reducers/tagsReducer';
+import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import { useSelector } from "react-redux";
+import { selectTags } from "../../../../reducers/tagsReducer";
 
 export default function AddTag({ tag, setTag }) {
   const tags = useSelector(selectTags);
@@ -17,15 +16,16 @@ export default function AddTag({ tag, setTag }) {
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id='demo-simple-select-label'>Select Tag</InputLabel>
+        <InputLabel id="demo-simple-select-label">Select Tag</InputLabel>
         <Select
-          labelId='demo-simple-select-label'
-          id='demo-simple-select'
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
           value={tag}
-          label='Select Tag'
-          onChange={handleChange}>
+          label="Select Tag"
+          onChange={handleChange}
+        >
           {tags.map((tag) => (
-            <MenuItem key={tag.id} value={tag.tagName}>
+            <MenuItem key={tag.tagName} value={tag.tagName}>
               {tag.tagName}
             </MenuItem>
           ))}

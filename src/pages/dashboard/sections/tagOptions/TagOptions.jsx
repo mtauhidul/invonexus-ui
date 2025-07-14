@@ -1,4 +1,4 @@
-import { Delete, Edit } from '@mui/icons-material';
+import { Add, Delete, Edit, Label } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -6,23 +6,26 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Divider,
   IconButton,
   Stack,
   TextField,
   Tooltip,
-} from '@mui/material';
-import { MaterialReactTable } from 'material-react-table';
-import React, { useCallback, useMemo, useState } from 'react';
-import { toast } from 'react-hot-toast';
+  Typography,
+} from "@mui/material";
+import { MaterialReactTable } from "material-react-table";
+import React, { useCallback, useMemo, useState } from "react";
+import { toast } from "react-hot-toast";
 import {
   addTag,
   deleteTag,
   getTags,
   updateTag,
-} from '../../../../services/services';
+} from "../../../../services/services";
 // import { data } from './makeData';
-import { useDispatch, useSelector } from 'react-redux';
-import { addTags, selectTags } from '../../../../reducers/tagsReducer';
+import { useDispatch, useSelector } from "react-redux";
+import { addTags, selectTags } from "../../../../reducers/tagsReducer";
+import Styles from "./TagOptions.module.css";
 
 const TagOptions = () => {
   const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -44,19 +47,19 @@ const TagOptions = () => {
 
   const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
     const data = {
-      tagId: row.getValue('id'),
+      tagId: row.getValue("id"),
       tagName: values.tag,
     };
 
-    const res = await updateTag(row.getValue('id'), data);
+    const res = await updateTag(row.getValue("id"), data);
     if (res.status === 200) {
-      toast.success('Tag updated successfully!');
+      toast.success("Tag updated successfully!");
     } else {
-      toast.error('Error updating tag');
+      toast.error("Error updating tag");
     }
 
     const newTags = tags.map((tag) => {
-      if (tag.tagId === row.getValue('id')) {
+      if (tag.tagId === row.getValue("id")) {
         return {
           ...tag,
           tagName: values.tag,
@@ -75,50 +78,84 @@ const TagOptions = () => {
 
   const handleDeleteRow = async (row) => {
     if (
-      !confirm(`Are you sure you want to delete tag "${row.getValue('tag')}"`)
+      !confirm(`Are you sure you want to delete tag "${row.getValue("tag")}"`)
     )
       return;
-    const res = await deleteTag(row.getValue('id'));
+    const res = await deleteTag(row.getValue("id"));
     // console.log(res);
     if (res.status === 204) {
-      toast.success('Tag deleted successfully!');
+      toast.success("Tag deleted successfully!");
     } else {
-      toast.error('Error deleting tag');
+      toast.error("Error deleting tag");
     }
 
-    const newTags = tags.filter((tag) => tag.tagId !== row.getValue('id'));
+    const newTags = tags.filter((tag) => tag.tagId !== row.getValue("id"));
 
     dispatch(addTags(newTags));
   };
 
-  const getCommonEditTextFieldProps = useCallback((cell) => {
-    return {
-      error: !!validationErrors[cell.column.accessorKey],
-      helperText: validationErrors[cell.column.accessorKey],
-      onBlur: (e) => {
-        const { name, value } = e.target;
-        const error = validateRequired(value);
-        setValidationErrors((prev) => ({
-          ...prev,
-          [name]: error ? 'Required' : '',
-        }));
-      },
-    };
-  });
+  const getCommonEditTextFieldProps = useCallback(
+    (cell) => {
+      return {
+        error: !!validationErrors[cell.column.accessorKey],
+        helperText: validationErrors[cell.column.accessorKey],
+        variant: "outlined",
+        size: "small",
+        sx: {
+          "& .MuiOutlinedInput-root": {
+            backgroundColor: "var(--color-background)",
+            borderRadius: "var(--radius-md)",
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor: "var(--color-primary)",
+            },
+            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: "var(--color-primary)",
+              borderWidth: "2px",
+            },
+            "&.Mui-error .MuiOutlinedInput-notchedOutline": {
+              borderColor: "var(--color-error)",
+            },
+          },
+          "& .MuiInputLabel-root": {
+            color: "var(--color-text-secondary)",
+            "&.Mui-focused": {
+              color: "var(--color-primary)",
+            },
+            "&.Mui-error": {
+              color: "var(--color-error)",
+            },
+          },
+          "& .MuiFormHelperText-root": {
+            color: "var(--color-error)",
+            fontSize: "0.75rem",
+          },
+        },
+        onBlur: (e) => {
+          const { name, value } = e.target;
+          const error = validateRequired(value);
+          setValidationErrors((prev) => ({
+            ...prev,
+            [name]: error ? "Required" : "",
+          }));
+        },
+      };
+    },
+    [validationErrors]
+  );
 
   const columns = useMemo(
     () => [
       {
-        accessorKey: 'id',
-        header: 'Tag ID',
+        accessorKey: "id",
+        header: "Tag ID",
         enableColumnOrdering: false,
         enableEditing: false, //disable editing on this column
         enableSorting: false,
         size: 80,
       },
       {
-        accessorKey: 'tag',
-        header: 'Tag Name',
+        accessorKey: "tag",
+        header: "Tag Name",
         size: 140,
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...getCommonEditTextFieldProps(cell),
@@ -129,59 +166,114 @@ const TagOptions = () => {
   );
 
   return (
-    <>
-      <MaterialReactTable
-        displayColumnDefOptions={{
-          'mrt-row-actions': {
-            muiTableHeadCellProps: {
-              align: 'center',
-            },
-            size: 120,
-          },
-        }}
-        columns={columns}
-        data={tableData}
-        editingMode='modal' //default
-        enableColumnOrdering
-        enableEditing
-        onEditingRowSave={handleSaveRowEdits}
-        onEditingRowCancel={handleCancelRowEdits}
-        renderRowActions={({ row, table }) => (
-          <Box sx={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-            <Tooltip arrow placement='left' title='Edit'>
-              <IconButton onClick={() => table.setEditingRow(row)}>
-                <Edit />
-              </IconButton>
-            </Tooltip>
-            <Tooltip arrow placement='right' title='Delete'>
-              <IconButton color='error' onClick={() => handleDeleteRow(row)}>
-                <Delete />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        )}
-        renderTopToolbarCustomActions={() => (
-          <Button
-            color='secondary'
-            sx={{
-              backgroundColor: '#375a64',
-              '&:hover': {
-                backgroundColor: '#2a454e',
+    <div className={Styles.container}>
+      <div className={Styles.tableContainer}>
+        <MaterialReactTable
+          displayColumnDefOptions={{
+            "mrt-row-actions": {
+              muiTableHeadCellProps: {
+                align: "center",
               },
-            }}
-            onClick={() => setCreateModalOpen(true)}
-            variant='contained'>
-            Create New Tag
-          </Button>
-        )}
-      />
+              size: 120,
+            },
+          }}
+          columns={columns}
+          data={tableData}
+          editingMode="modal"
+          enableColumnOrdering
+          enableEditing
+          onEditingRowSave={handleSaveRowEdits}
+          onEditingRowCancel={handleCancelRowEdits}
+          muiEditRowDialogProps={{
+            PaperProps: {
+              sx: {
+                borderRadius: "var(--radius-lg)",
+                background: "var(--color-surface)",
+                minWidth: "400px",
+              },
+            },
+            sx: {
+              "& .MuiDialogTitle-root": {
+                background: "var(--color-surface)",
+                borderBottom: "1px solid var(--color-border)",
+                color: "var(--color-text-primary)",
+                fontWeight: 600,
+                display: "flex",
+                alignItems: "center",
+                gap: 2,
+                "&::before": {
+                  content: '"🏷️"',
+                  fontSize: "1.2rem",
+                },
+              },
+              "& .MuiDialogContent-root": {
+                background: "var(--color-surface)",
+                padding: "1.5rem",
+              },
+              "& .MuiDialogActions-root": {
+                background: "var(--color-surface)",
+                borderTop: "1px solid var(--color-border)",
+                padding: "1rem 1.5rem",
+                gap: "0.5rem",
+              },
+              "& .MuiButton-outlined": {
+                borderColor: "var(--color-border)",
+                color: "var(--color-text-secondary)",
+                "&:hover": {
+                  borderColor: "var(--color-primary)",
+                  backgroundColor: "var(--color-background)",
+                },
+              },
+              "& .MuiButton-contained": {
+                backgroundColor: "var(--color-primary)",
+                "&:hover": {
+                  backgroundColor: "var(--color-primary-dark)",
+                },
+              },
+            },
+          }}
+          renderRowActions={({ row, table }) => (
+            <Box
+              sx={{ display: "flex", gap: "1rem", justifyContent: "center" }}
+            >
+              <Tooltip arrow placement="left" title="Edit">
+                <IconButton onClick={() => table.setEditingRow(row)}>
+                  <Edit />
+                </IconButton>
+              </Tooltip>
+              <Tooltip arrow placement="right" title="Delete">
+                <IconButton color="error" onClick={() => handleDeleteRow(row)}>
+                  <Delete />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          )}
+          renderTopToolbarCustomActions={() => (
+            <Button
+              startIcon={<Add />}
+              color="primary"
+              onClick={() => setCreateModalOpen(true)}
+              variant="contained"
+              sx={{
+                backgroundColor: "var(--color-primary)",
+                "&:hover": {
+                  backgroundColor: "var(--color-primary-dark)",
+                },
+              }}
+            >
+              Create New Tag
+            </Button>
+          )}
+        />
+      </div>
+
       <CreateNewAccountModal
         columns={columns}
         open={createModalOpen}
         onClose={() => setCreateModalOpen(false)}
         // onSubmit={handleCreateNewRow}
       />
-    </>
+    </div>
   );
 };
 
@@ -189,7 +281,7 @@ const TagOptions = () => {
 export const CreateNewAccountModal = ({ open, columns, onClose, onSubmit }) => {
   const [values, setValues] = useState(() =>
     columns.reduce((acc, column) => {
-      acc[column.accessorKey ?? ''] = '';
+      acc[column.accessorKey ?? ""] = "";
       return acc;
     }, {})
   );
@@ -202,7 +294,7 @@ export const CreateNewAccountModal = ({ open, columns, onClose, onSubmit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    toast.loading('Creating new tag...');
+    toast.loading("Creating new tag...");
 
     const data = {
       tagName: values.tag,
@@ -212,12 +304,12 @@ export const CreateNewAccountModal = ({ open, columns, onClose, onSubmit }) => {
     if (res.status === 200) {
       setTimeout(() => {
         toast.dismiss();
-        toast.success('Tag created successfully!');
+        toast.success("Tag created successfully!");
       }, 500);
     } else {
       setTimeout(() => {
         toast.dismiss();
-        toast.error('Error creating tag');
+        toast.error("Error creating tag");
       }, 500);
     }
 
@@ -226,31 +318,85 @@ export const CreateNewAccountModal = ({ open, columns, onClose, onSubmit }) => {
   };
 
   return (
-    <Dialog open={open}>
-      <DialogTitle textAlign='center'>Create New Tag</DialogTitle>
-      <DialogContent>
+    <Dialog
+      open={open}
+      maxWidth="sm"
+      fullWidth
+      PaperProps={{
+        sx: {
+          borderRadius: "var(--radius-lg)",
+          background: "var(--color-surface)",
+        },
+      }}
+    >
+      <DialogTitle
+        sx={{
+          textAlign: "center",
+          pb: 1,
+          borderBottom: "1px solid var(--color-border)",
+          background: "var(--color-surface)",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 2,
+          }}
+        >
+          <Label sx={{ color: "var(--color-primary)" }} />
+          <Typography
+            variant="h6"
+            sx={{ color: "var(--color-text-primary)", fontWeight: 600 }}
+          >
+            Create New Tag
+          </Typography>
+        </Box>
+      </DialogTitle>
+      <DialogContent sx={{ background: "var(--color-surface)", pt: 3 }}>
         <form onSubmit={(e) => handleSubmit(e)}>
           <Stack
             sx={{
-              width: '100%',
-              minWidth: { xs: '300px', sm: '360px', md: '400px' },
-              gap: '1.5rem',
-            }}>
+              width: "100%",
+              minWidth: { xs: "300px", sm: "360px", md: "400px" },
+              gap: "1.5rem",
+            }}
+          >
             {columns.map((column, index) => (
               <div key={index}>
-                {column.accessorKey !== 'id' &&
-                  column.accessorKey !== 'creationDate' && (
+                {column.accessorKey !== "id" &&
+                  column.accessorKey !== "creationDate" && (
                     <TextField
                       fullWidth
                       key={column.accessorKey}
                       label={column.header}
                       name={column.accessorKey}
+                      placeholder={`Enter ${column.header.toLowerCase()}`}
+                      variant="outlined"
                       onChange={(e) =>
                         setValues({
                           ...values,
                           [e.target.name]: e.target.value,
                         })
                       }
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          backgroundColor: "var(--color-background)",
+                          "&:hover .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "var(--color-primary)",
+                          },
+                          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "var(--color-primary)",
+                          },
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "var(--color-text-secondary)",
+                          "&.Mui-focused": {
+                            color: "var(--color-primary)",
+                          },
+                        },
+                      }}
                     />
                   )}
               </div>
@@ -258,19 +404,40 @@ export const CreateNewAccountModal = ({ open, columns, onClose, onSubmit }) => {
           </Stack>
         </form>
       </DialogContent>
-      <DialogActions sx={{ p: '1.25rem' }}>
-        <Button onClick={onClose}>Cancel</Button>
+      <Divider />
+      <DialogActions
+        sx={{
+          p: "1.5rem",
+          background: "var(--color-surface)",
+          gap: 1,
+        }}
+      >
         <Button
-          color='secondary'
+          onClick={onClose}
+          variant="outlined"
           sx={{
-            backgroundColor: '#375a64',
-            '&:hover': {
-              backgroundColor: '#2a454e',
+            borderColor: "var(--color-border)",
+            color: "var(--color-text-secondary)",
+            "&:hover": {
+              borderColor: "var(--color-primary)",
+              backgroundColor: "var(--color-background)",
             },
           }}
+        >
+          Cancel
+        </Button>
+        <Button
           onClick={handleSubmit}
-          variant='contained'>
-          Create New Tag
+          variant="contained"
+          startIcon={<Add />}
+          sx={{
+            backgroundColor: "var(--color-primary)",
+            "&:hover": {
+              backgroundColor: "var(--color-primary-dark)",
+            },
+          }}
+        >
+          Create Tag
         </Button>
       </DialogActions>
     </Dialog>

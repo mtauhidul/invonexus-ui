@@ -1,9 +1,10 @@
-/* General styles for both containers */
+/* Modern Home Container */
 .homeContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   min-height: 100vh;
+  background: linear-gradient(135deg, var(--color-background) 0%, #f8fafc 100%);
 }
 
 .authContainer {
@@ -14,111 +15,264 @@
   width: 50%;
   height: 100%;
   min-height: 100vh;
-  padding: 0 5%;
+  padding: var(--spacing-2xl) var(--spacing-xl);
   text-align: left;
-  background-color: #ececec;
 }
 
 .authContainer .authBox {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  max-width: 600px;
-  height: auto;
-  padding: 5%;
+  max-width: 480px;
+  width: 100%;
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2xl);
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--color-border-light);
   text-align: left;
 }
 
-/* Specific styles for elements inside .authBox */
+/* Brand Section */
+.brandSection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--spacing-xl);
+  gap: var(--spacing-md);
+}
+
+.brandLogo {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.brandContent {
+  text-align: left;
+}
+
 .authContainer .authBox .authTitle {
   font-size: 2rem;
-  font-weight: 600;
-  color: #2a454e;
+  font-weight: 700;
+  color: var(--color-primary);
   text-align: left;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.authContainer .authBox .authBoxSubTitle {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  margin: var(--spacing-xs) 0 0 0;
+  text-align: left;
+  line-height: 1.5;
+}
+
+/* Login Section */
+.loginSection {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--spacing-lg);
 }
 
 .authContainer .authBox .authBoxTitle {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #2a454e;
-  margin-top: 3rem;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-lg) 0;
+  text-align: center;
 }
 
-.authContainer .authBox .authBoxSubTitle {
-  font-size: 1rem;
-  font-weight: 400;
-  color: #375a64;
-  margin-top: -0.75rem;
-  text-align: left;
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
 }
 
 .authContainer .authBox .authInput {
   width: 100%;
-  max-width: 400px;
-  height: 3rem;
-  margin-bottom: 1rem;
+  height: 3.5rem;
   font-size: 1rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.authContainer .authBox .authInput .MuiOutlinedInput-root {
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-variant);
+  border: 1px solid var(--color-border);
+  transition: all 0.2s ease-in-out;
+}
+
+.authContainer .authBox .authInput .MuiOutlinedInput-root:hover {
+  border-color: var(--color-primary-light);
+  background-color: var(--color-surface);
+}
+
+.authContainer .authBox .authInput .MuiOutlinedInput-root.Mui-focused {
+  border-color: var(--color-primary);
+  background-color: var(--color-surface);
+  box-shadow: 0 0 0 3px rgb(42 69 78 / 0.1);
 }
 
 .authContainer .authBox .authButton {
   width: 100%;
-  max-width: 400px;
-  height: 3rem;
-  margin-bottom: 1rem;
+  height: 3.5rem;
   font-size: 1rem;
   font-weight: 600;
-  color: #fff;
-  background-color: #2a454e;
+  color: var(--color-text-inverse);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-secondary) 100%
+  );
   border: none;
-  border-radius: 5px;
+  border-radius: var(--radius-lg);
   cursor: pointer;
-  margin-top: 10px;
+  transition: all 0.2s ease-in-out;
+  box-shadow: var(--shadow-md);
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+.authContainer .authBox .authButton:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-dark) 0%,
+    var(--color-primary) 100%
+  );
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
+}
+
+.authContainer .authBox .authButton:disabled {
+  background: var(--color-text-muted);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.authContainer .authBox .authButton:active {
+  transform: translateY(0);
+}
+
+/* Hero Section for Mobile */
+.heroContainerOne {
+  display: none;
+  margin: var(--spacing-lg) 0;
 }
 
 .heroContainerOne img {
   width: 100%;
-  display: none;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
 }
 
+/* Hero Section for Desktop */
 .heroContainer {
   width: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: var(--spacing-xl);
 }
 
 .heroContainer img {
   width: 100%;
+  max-width: 600px;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  transition: transform 0.3s ease-in-out;
 }
 
-/* Media query for responsive design */
+.heroContainer img:hover {
+  transform: scale(1.02);
+}
+
+/* Loading Animation */
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+  .homeContainer {
+    padding: var(--spacing-md);
+  }
+
+  .authContainer {
+    padding: var(--spacing-xl) var(--spacing-lg);
+  }
+
+  .heroContainer {
+    padding: var(--spacing-lg);
+  }
+}
+
 @media screen and (max-width: 768px) {
   .homeContainer {
     flex-direction: column;
     justify-content: center;
+    padding: var(--spacing-md);
   }
 
   .authContainer {
     width: 100%;
-    padding: 0;
+    padding: var(--spacing-lg);
+    min-height: auto;
   }
 
   .authContainer .authBox {
     max-width: 100%;
+    padding: var(--spacing-xl);
+    margin: var(--spacing-md) 0;
+  }
+
+  .brandSection {
+    flex-direction: column;
     text-align: center;
   }
 
-  .heroContainerOne img {
-    width: 100%;
+  .brandContent {
+    text-align: center;
+  }
+
+  .authContainer .authBox .authTitle {
+    text-align: center;
+    font-size: 1.75rem;
+  }
+
+  .authContainer .authBox .authBoxSubTitle {
+    text-align: center;
+  }
+
+  .heroContainerOne {
     display: block;
   }
 
   .heroContainer {
-    width: 100%;
     display: none;
   }
+}
 
-  .heroContainer img {
-    width: 100%;
+@media screen and (max-width: 480px) {
+  .authContainer .authBox {
+    padding: var(--spacing-lg);
+  }
+
+  .authContainer .authBox .authTitle {
+    font-size: 1.5rem;
+  }
+
+  .brandLogo {
+    width: 56px;
+    height: 56px;
   }
 }

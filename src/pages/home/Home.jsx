@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import React, { useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { ThreeDots } from "react-loader-spinner";
 import { useDispatch } from "react-redux";
@@ -56,85 +56,73 @@ const Home = () => {
           noValidate
           autoComplete="off"
         >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <img
-              src={Logo}
-              alt="invonexus"
-              style={{
-                width: "120px",
-                height: "120px",
-                display: "block",
-                marginBottom: "10px",
-              }}
-            />
-            <div>
+          <div className={Styles.brandSection}>
+            <img src={Logo} alt="InvoNexus Logo" className={Styles.brandLogo} />
+            <div className={Styles.brandContent}>
               <h1 className={Styles.authTitle}>InvoNexus</h1>
               <p className={Styles.authBoxSubTitle}>
                 Manage your business invoices with ease and efficiency.
               </p>
             </div>
           </div>
+
           <div className={Styles.heroContainerOne}>
             <img src={HeroImg} alt="Electronic Document Management" />
           </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <h2 className={Styles.authBoxTitle}>Login</h2>
 
-            <TextField
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              className={Styles.authInput}
-              id="outlined-basic"
-              label="Username"
-              variant="outlined"
-            />
+          <div className={Styles.loginSection}>
+            <h2 className={Styles.authBoxTitle}>Welcome Back</h2>
 
-            <TextField
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className={Styles.authInput}
-              id="outlined-password-input"
-              label="Password"
-              type="password"
-              autoComplete="current-password"
-            />
+            <div className={Styles.inputGroup}>
+              <TextField
+                onChange={(e) => setUsername(e.target.value)}
+                value={username}
+                required
+                className={Styles.authInput}
+                id="username-input"
+                label="Username"
+                variant="outlined"
+                autoComplete="username"
+                placeholder="Enter your username"
+              />
+
+              <TextField
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+                required
+                className={Styles.authInput}
+                id="password-input"
+                label="Password"
+                type="password"
+                autoComplete="current-password"
+                placeholder="Enter your password"
+              />
+            </div>
+
             <Button
-              disabled={username === "" || password === ""}
-              type="
-            submit"
+              disabled={username === "" || password === "" || isSubmitting}
+              type="submit"
               onClick={(e) => {
                 handleSubmit(e);
               }}
               className={Styles.authButton}
               variant="contained"
+              size="large"
             >
               {isSubmitting ? (
-                <ThreeDots
-                  height="80"
-                  width="80"
-                  radius="9"
-                  color="#4fa94d"
-                  ariaLabel="three-dots-loading"
-                  wrapperStyle={{}}
-                  wrapperClassName=""
-                  visible={true}
-                />
+                <div className={Styles.loadingContainer}>
+                  <ThreeDots
+                    height="24"
+                    width="24"
+                    radius="9"
+                    color="currentColor"
+                    ariaLabel="three-dots-loading"
+                    visible={true}
+                  />
+                  <span>Signing in...</span>
+                </div>
               ) : (
-                "Submit"
+                "Sign In"
               )}
             </Button>
           </div>

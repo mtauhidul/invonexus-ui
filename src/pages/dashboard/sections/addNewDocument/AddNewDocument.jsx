@@ -1,79 +1,60 @@
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import React, { useEffect, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { useDispatch } from 'react-redux';
-import pdfIcon from '../../../../assets/pdf.png';
-import { addAllDocuments } from '../../../../reducers/documentsReducer';
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import Button from "@mui/material/Button";
+import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { ThreeDots } from "react-loader-spinner";
+import { useDispatch } from "react-redux";
+import pdfIcon from "../../../../assets/pdf.png";
+import { addAllDocuments } from "../../../../reducers/documentsReducer";
 import {
   addDocument,
   getDocuments,
   textExtract,
-} from '../../../../services/services';
-import AddCategory from './AddCategory';
-import AddTag from './AddTag';
+} from "../../../../services/services";
+import AddCategory from "./AddCategory";
+import Styles from "./AddNewDocument.module.css";
+import AddTag from "./AddTag";
 
-const styles = {
-  thumb: {
-    display: 'inline-flex',
-    borderRadius: 4,
-    border: '1px solid #eaeaea',
-    backgroundColor: '#fafafa',
-    marginBottom: 8,
-    marginRight: 8,
-    width: 200,
-    height: 60,
-    padding: 6,
-    boxSizing: 'border-box',
-    fontWeight: 'bold',
-    fontSize: '0.8rem',
-    fontFamily: 'Exo, sans-serif',
-    color: '#2A454E',
-  },
-};
-
-const ThumbsContainer = ({ files }) => (
-  <Box
-    sx={{
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      marginTop: 16,
-    }}>
-    {files.map((file, index) => (
-      <Thumb key={index} file={file} />
-    ))}
-  </Box>
-);
-
-const Thumb = ({ file }) => (
-  <div style={styles.thumb}>
-    <div style={{ display: 'flex', minWidth: 0, overflow: 'hidden' }}>
-      <img
-        src={pdfIcon}
-        style={{
-          display: 'block',
-          width: '25px',
-          height: '25px',
-          objectFit: 'contain',
-          margin: 'auto',
-          marginRight: '0.5rem',
-        }}
-        onLoad={() => URL.revokeObjectURL(file.preview)}
-        alt={`Preview of ${file.name}`}
-      />
-      <p style={{ fontSize: '0.8rem', marginTop: '0.5rem' }}>
-        {file.name.length > 20 ? file.name.substring(0, 20) + '...' : file.name}
-      </p>
-    </div>
+const FileItem = ({ file }) => (
+  <div className={Styles.fileItem}>
+    <img src={pdfIcon} alt="PDF file" className={Styles.fileIcon} />
+    <p className={Styles.fileName}>
+      {file.name.length > 25 ? file.name.substring(0, 25) + "..." : file.name}
+    </p>
   </div>
 );
 
+FileItem.propTypes = {
+  file: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
+const FilePreview = ({ files }) => {
+  if (files.length === 0) return null;
+
+  return (
+    <div className={Styles.filePreviewContainer}>
+      <h3 className={Styles.filePreviewTitle}>Selected Files</h3>
+      <div className={Styles.fileList}>
+        {files.map((file, index) => (
+          <FileItem key={index} file={file} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+FilePreview.propTypes = {
+  files: PropTypes.array.isRequired,
+};
+
 const AddNewDocument = () => {
   const [files, setFiles] = useState([]);
-  const [status, setStatus] = useState('Submit Document');
-  const [tag, setTag] = useState('');
-  const [category, setCategory] = useState('');
+  const [status, setStatus] = useState("Submit Document");
+  const [tag, setTag] = useState("");
+  const [category, setCategory] = useState("");
 
   const dispatch = useDispatch();
 
@@ -89,10 +70,10 @@ const AddNewDocument = () => {
   };
 
   const createNewDocument = async (fileUrlRes, invoice) => {
-    setStatus('Saving to database ...');
+    setStatus("Saving to database ...");
     const data = {
       ...invoice,
-      status: 'Pending',
+      status: "Pending",
       tag,
       category,
       document_url: fileUrlRes,
@@ -101,23 +82,23 @@ const AddNewDocument = () => {
     const res = await addDocument(data);
     if (res.status === 200 && res.data.id) {
       setTimeout(() => {
-        setStatus('Document added successfully ✅');
+        setStatus("Document added successfully ✅");
         fetchAndDispatchDocuments();
       }, 2000);
     }
 
     setTimeout(() => {
-      setStatus('Submit Document');
+      setStatus("Submit Document");
       setFiles([]);
-      setTag('');
-      setCategory('');
+      setTag("");
+      setCategory("");
     }, 4000);
 
     return res;
   };
 
   const handleTextExtraction = async (file) => {
-    setStatus('Extracting Text ...');
+    setStatus("Extracting Text ...");
     const extractedText = await textExtract(file);
     const invoiceFileURL = extractedText.data.fileUrl;
     const prediction =
@@ -158,18 +139,18 @@ const AddNewDocument = () => {
 
     if (res.status === 200) {
       setTimeout(() => {
-        setStatus('Document added successfully ✅');
+        setStatus("Document added successfully ✅");
       }, 2000);
     } else {
       setTimeout(() => {
-        setStatus('Error adding document ❌');
+        setStatus("Error adding document ❌");
       }, 2000);
     }
   };
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
-      'application/pdf': 'pdf',
+      "application/pdf": [".pdf"],
     },
     onDrop: (acceptedFiles) => {
       setFiles(
@@ -184,68 +165,72 @@ const AddNewDocument = () => {
   });
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        minWidth: 300,
-        width: '100%',
-      }}>
-      <Box
-        {...getRootProps({ className: 'dropzone' })}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100%',
-          border: '1px dashed #2A454E',
-          borderRadius: '4px',
-          backgroundColor: '#fafafa',
-          color: '#2A454E',
-          outline: 'none',
-          transition: 'border .24s ease-in-out',
-          padding: '2rem 2.5rem',
-          cursor: 'pointer',
-        }}>
-        <input {...getInputProps()} />
-        <p>
-          Drag 'n' drop some files here, or click to select files for adding new
-          documents.
-        </p>
-      </Box>
-      <ThumbsContainer files={files} />
-      {files.length > 0 && (
-        <Box sx={{ width: '50%', minWidth: '10rem', height: '100%', mt: 2 }}>
-          <AddTag tag={tag} setTag={setTag} />
-        </Box>
-      )}
-      {files.length > 0 && (
-        <Box sx={{ width: '50%', minWidth: '10rem', height: '100%', mt: 1 }}>
-          <AddCategory category={category} setCategory={setCategory} />
-        </Box>
-      )}
-      {files.length > 0 && tag.length > 0 && category.length > 0 && (
-        <Button
-          sx={{
-            width: '50%',
-            minWidth: '10rem',
-            marginTop: '1rem',
-            height: '2.7rem',
-            fontSize: '1rem',
-            fontWeight: 'bold',
-            fontFamily: 'Exo, sans-serif',
-            backgroundColor: '#375a64',
-            '&:hover': {
-              backgroundColor: '#2a454e',
-            },
-          }}
-          onClick={() => handleTextExtraction(files[0])}
-          variant='contained'
-          color='success'>
-          {status}
-        </Button>
-      )}
-    </Box>
+    <div className={Styles.container}>
+      <div className={Styles.formSection}>
+        <div
+          {...getRootProps({ className: "dropzone" })}
+          className={`${Styles.dropzoneContainer} ${
+            isDragActive ? Styles.active : ""
+          }`}
+        >
+          <input {...getInputProps()} />
+          <div className={Styles.dropzoneContent}>
+            <CloudUploadIcon className={Styles.dropzoneIcon} />
+            <p className={Styles.dropzoneText}>
+              Drop your PDF files here, or click to browse
+            </p>
+            <p className={Styles.dropzoneSubtext}>
+              Supports PDF files up to 10MB
+            </p>
+          </div>
+        </div>
+
+        <FilePreview files={files} />
+
+        {files.length > 0 && (
+          <div className={Styles.selectorsContainer}>
+            <div className={Styles.selectorGroup}>
+              <label className={Styles.selectorLabel}>Tag</label>
+              <AddTag tag={tag} setTag={setTag} />
+            </div>
+            <div className={Styles.selectorGroup}>
+              <label className={Styles.selectorLabel}>Category</label>
+              <AddCategory category={category} setCategory={setCategory} />
+            </div>
+          </div>
+        )}
+
+        {files.length > 0 && tag.length > 0 && category.length > 0 && (
+          <div className={Styles.submitButtonContainer}>
+            <Button
+              className={Styles.submitButton}
+              onClick={() => handleTextExtraction(files[0])}
+              variant="contained"
+              disabled={status !== "Submit Document"}
+              size="large"
+            >
+              {status === "Submit Document" ? (
+                "Process Document"
+              ) : status.includes("✅") ? (
+                status
+              ) : (
+                <div className={Styles.loadingContainer}>
+                  <ThreeDots
+                    height="20"
+                    width="20"
+                    radius="9"
+                    color="currentColor"
+                    ariaLabel="three-dots-loading"
+                    visible={true}
+                  />
+                  <span>{status}</span>
+                </div>
+              )}
+            </Button>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

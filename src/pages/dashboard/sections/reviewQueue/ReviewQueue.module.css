@@ -1,0 +1,350 @@
+/* Main container */
+.container {
+  padding: var(--spacing-lg);
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Header section */
+.headerSection {
+  margin-bottom: var(--spacing-xl);
+  text-align: left;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.subtitle {
+  color: var(--color-text-secondary);
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Table container - simplified */
+.tableContainer {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  overflow: auto;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Prevent horizontal scrolling */
+.tableContainer :global(.MuiTable-root) {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.tableContainer :global(.MuiTableContainer-root) {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* Ensure table cells don't exceed container */
+.tableContainer :global(.MuiTableCell-root) {
+  overflow: hidden;
+  max-width: 0;
+}
+
+/* Allow vendor cell to wrap properly */
+.tableContainer :global(.MuiTableCell-root:first-child) {
+  white-space: normal;
+}
+
+/* Table header enhancements */
+.tableContainer :global(.MuiTableHead-root) {
+  background-color: var(--color-surface-variant);
+}
+
+.tableContainer :global(.MuiTableCell-head) {
+  font-weight: 600;
+  color: var(--color-text-primary);
+  border-bottom: 2px solid var(--color-border);
+}
+
+/* Actions column header styling */
+.tableContainer :global(.MuiTableCell-head:last-child) {
+  text-align: center;
+  padding: 8px 4px;
+}
+
+.tableContainer :global(.MuiTableCell-head:last-child svg) {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Toolbar styling */
+.tableContainer :global(.MuiToolbar-root) {
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.tableContainer :global(.MuiIconButton-root) {
+  color: var(--color-text-primary);
+}
+
+/* Filter styling */
+.tableContainer :global(.MuiTextField-root) {
+  margin: 0;
+}
+
+.tableContainer :global(.MuiTextField-root .MuiOutlinedInput-root) {
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+}
+
+/* Pagination styling */
+.tableContainer :global(.MuiTablePagination-root) {
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-surface-variant);
+}
+
+/* Vendor Cell */
+.vendorCell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.vendorName {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--color-primary);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.invoiceInfo {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* Chips */
+.categoryChip {
+  background-color: var(--color-surface-variant) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border) !important;
+  font-weight: 500 !important;
+}
+
+.statusChip {
+  font-weight: 500 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.statusPending {
+  background-color: rgb(251 191 36 / 0.1) !important;
+  color: var(--color-warning) !important;
+  border: 1px solid rgb(251 191 36 / 0.3) !important;
+}
+
+.statusApproved {
+  background-color: rgb(5 150 105 / 0.1) !important;
+  color: var(--color-success) !important;
+  border: 1px solid rgb(5 150 105 / 0.3) !important;
+}
+
+.statusRejected {
+  background-color: rgb(220 38 38 / 0.1) !important;
+  color: var(--color-error) !important;
+  border: 1px solid rgb(220 38 38 / 0.3) !important;
+}
+
+/* Amount cell */
+.amountCell {
+  font-weight: 600;
+  font-family: "Exo", sans-serif;
+  text-align: right;
+}
+
+.amountLarge {
+  color: var(--color-success);
+  font-weight: 700;
+}
+
+.amountMedium {
+  color: var(--color-warning);
+  font-weight: 600;
+}
+
+.amountSmall {
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+/* Date cell */
+.dateCell {
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.noDate {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* Detail panel */
+.detailPanel {
+  padding: var(--spacing-sm);
+  background-color: var(--color-surface-variant);
+  border-top: 1px solid var(--color-border);
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: 200px 1fr 1fr 1fr;
+  gap: var(--spacing-sm);
+  align-items: start;
+}
+
+.documentPreviewSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.documentThumbnail {
+  width: 120px;
+  height: auto;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.viewDocumentButton {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-secondary) 100%
+  );
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-weight: 600;
+  text-transform: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.viewDocumentButton:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.detailSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.detailSectionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-sm) 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.detailField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.detailLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.detailValue {
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  margin: 0;
+  font-weight: 500;
+}
+
+.summaryAmount {
+  font-weight: 600;
+  font-family: "Exo", sans-serif;
+}
+
+.totalAmount {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-align: center;
+  padding: var(--spacing-sm);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-primary);
+}
+
+.lineItem {
+  padding: var(--spacing-sm);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  font-size: 0.875rem;
+}
+
+/* No data state */
+.noDataContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+  text-align: center;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+.noDataIcon {
+  font-size: 3rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-sm);
+}
+
+.noDataText {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .detailGrid {
+    grid-template-columns: 180px 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .detailGrid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .documentPreviewSection {
+    order: -1;
+  }
+}
